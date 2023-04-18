@@ -4,8 +4,23 @@ Rails.application.routes.draw do
 
   # User routes
 
+  # SIGN UP
+  get("/user_sign_up", { :controller => "users", :action => "registration" })
+
   # CREATE
   get("/insert_user_record", {:controller => "users", :action => "create" })
+
+  # SIGN UP
+  get("/user_sign_up", { :controller => "users", :action => "registration" })
+
+  # SIGN OUT
+  get("/user_sign_out", { :controller => "users", :action => "toast_cookies" })
+
+  # SIGN IN
+  get("/user_sign_in", { :controller => "users", :action => "new_sign_in" })
+
+  #VERIFY CREDENTIALS
+  post("/verify_credentials", { :controller => "users", :action => "authenticate" })
 
   # READ
   get("/users", {:controller => "users", :action => "index"})
@@ -16,6 +31,8 @@ Rails.application.routes.draw do
 
   # DELETE
   get("/delete_user/:the_user_id", {:controller => "users", :action => "destroy"})
+
+
 
   # Photo routes
 
