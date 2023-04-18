@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   def index
     @users = User.all.order({ :username => :asc })
 
@@ -26,7 +27,7 @@ class UsersController < ApplicationController
     save_status = user.save
 
     if save_status = user.save
-          # session is a hash, needs a key and a value
+      # session is a hash, needs a key and a value
       session.store(:user_id, user.id)
 
       redirect_to("/users/#{user.username}", { :notice => "Welcome #{user.username}!" })
@@ -45,7 +46,6 @@ class UsersController < ApplicationController
     redirect_to("/", { :notice => "Goodbye!" })
   end
 
-
   def update
     the_id = params.fetch("the_user_id")
     user = User.where({ :id => the_id }).at(0)
@@ -56,6 +56,35 @@ class UsersController < ApplicationController
 
     redirect_to("/users/#{user.username}")
   end
+
+  def authenticate
+
+    # get the username from params
+    username = params.fetch("input_username") # this is from sign_in.html.erb
+
+    # get the password from params
+    password = params.fetch("input_password") # this is from sign_in.html.erb
+
+    # look up record from the db matching username
+    user = User.where({ :username => username }).at(0)
+
+    # if there's no record, redirect back to sign in
+    if user == nil
+      redirect_to("/user_sign_in", { :alert => "User does not exist." })
+    else
+      # if there's a record, check to see if password matches
+      if user.authenticate(password)
+        # if so, set the cookie, redirect to homepage
+        session.store(:user_id, user.id)
+
+        redirect_to("/", { :notice => "Welcome back #{user.username}!" })
+      else
+        # if not, redirect back to sign in form
+        redirect_to("/user_sign_in", { :alert => "Password does not match" })
+      end
+    end
+  end
+
 
   def destroy
     username = params.fetch("the_username")
