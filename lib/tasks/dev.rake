@@ -1,5 +1,58 @@
 desc "Fill the database tables with some sample data"
 task({ :sample_data => :environment}) do
+  names = ["Pat", "Raghu", "Jelani"]
+  bool = [true, false]
+  
+   3.times do |count|
+      user = User.new
+      user.username = names.at(count)
+      user.private = bool.sample
+      user.comments_count = 0
+      user.likes_count = 0
+      user.save
+   end
+
+      photos = ["https://tinyurl.comy6hk6oep", https://tinyurl.com/y5uszprj, https://picsum.photos/200]
+      10.times do 
+        photo = Photo.new
+        photo.caption = "This is my photo"
+        photo.image = photos.sample
+        photo.likes_count = 0
+        photo.owner_id = users.sample.id
+        photo.save
+    end
+      
+      p "Added #{Photo.count} Photos"
+      
+      photos = Photo.all 
+      
+      10.times do 
+        like = Like.new
+        like.fan_id = users.sample.id 
+        like.photo_id = photos.sample.id
+        like.save
+    end
+      
+      p "Added #{Like.count} Likes"
+      
+      comments = ["Cool", "I like it", "Love it"]
+        
+      10.times do 
+        comment = Comment.new
+        comment.body = comments.sample
+        comment.author_id = users.sample.id 
+        comment.photo_id = photos.sample.id 
+        comment.save
+    end
+      
+      p "Added #{Comment.count} Comments"
+end
+
+
+
+=begin
+desc "Fill the database tables with some sample data"
+task({ :sample_data => :environment}) do
   starting = Time.now
 
   if Rails.env.production?
@@ -4228,3 +4281,5 @@ task({ :sample_data => :environment}) do
   puts "#{elapsed.to_i} seconds elapsed."
   puts "Generated Sample Data"
 end
+
+=end
